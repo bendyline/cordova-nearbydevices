@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+           id="com.Bendyline.NearbyDevices"
+      version="0.1.0">
+    <name>Bendyline</name>
+    <description>Bendyline Nearby Devices Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>phonegap,estimote</keywords>
+ 
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+	
+ 	<dependency id="com.red_folder.phonegap.plugin.backgroundservice" url="https://github.com/Red-Folder/bgs-core.git"/>
+
+    <js-module src="www/NearbyDevices.js" name="NearbyDevices">
+        <clobbers target="window.nearbyDevices" />
+    </js-module>
+ 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="NearbyDevices">
+                <param name="android-package" value="com.Bendyline.NearbyDevices.NearbyDevices"/>
+            </feature>
+        </config-file>
+ 
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.BLUETOOTH" />
+			<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+			<uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+		    <service android:exported="false" android:name="com.estimote.sdk.service.BeaconService" />
+			<service android:name="com.Bendyline.NearbyDevices.ListenerBackgroundService">
+				<intent-filter>
+					<action android:name="com.Bendyline.NearbyDevices.ListenerBackgroundService" />
+				</intent-filter>
+			</service>
+		</config-file>
+
+		
+        <source-file src="src/android/estimote-sdk-preview.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/com/Bendyline/NearbyDevices/NearbyDevices.java" target-dir="src/com/Bendyline/NearbyDevices" />      
+        <source-file src="src/android/com/Bendyline/NearbyDevices/ListenerThread.java" target-dir="src/com/Bendyline/NearbyDevices" />      		
+        <source-file src="src/android/com/Bendyline/NearbyDevices/ListenerBackgroundService.java" target-dir="src/com/Bendyline/NearbyDevices" />      
+        <source-file src="src/android/com/Bendyline/NearbyDevices/DeviceState.java" target-dir="src/com/Bendyline/NearbyDevices" />      
+        <source-file src="src/android/com/Bendyline/NearbyDevices/DeviceStateStatus.java" target-dir="src/com/Bendyline/NearbyDevices" />      
+
+	</platform>          
+</plugin>
